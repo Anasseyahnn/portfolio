@@ -49,7 +49,7 @@ export function Experience() {
     <section id="experience" style={{ padding: 'clamp(72px,11vh,130px) clamp(20px,4vw,48px)', borderTop: '1px solid var(--line)' }}>
       <div style={{ maxWidth: 1280, margin: '0 auto' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: 24 }}>
-          <SecHead num="04 /" kicker={tr(lang, 'Parcours', 'Career')} title={tr(lang, 'Expérience', 'Experience')} />
+          <SecHead num="04 /" kicker={tr(lang, 'Parcours', 'Career')} title={tr(lang, 'Expériences & Formations', 'Experience & Education')} />
           <Reveal>
             <div style={{ display: 'flex', gap: 6, padding: 5, borderRadius: 12, border: '1px solid var(--line)', marginBottom: 'clamp(32px,5vh,56px)' }}>
               {[['ai', DATA.experience.tracks.ai[lang]], ['meal', DATA.experience.tracks.meal[lang]], ['edu', DATA.experience.tracks.edu[lang]]].map(([k, label]) => (

@@ -108,7 +108,6 @@ export const DATA = {
     ],
     edu: [
       { org: 'Institut Supérieur de Statistique, Économétrie et Data Science (INSSEDS)', date: '2020 — 2022', role: { fr: 'Master en Data Science', en: 'Master’s in Data Science' }, bullets: { fr: ['Formation avancée en modélisation statistique, Machine Learning et Data Science.', 'Projets pratiques sur des données réelles.'], en: ['Advanced training in statistical modeling, Machine Learning, and Data Science.', 'Hands-on projects with real-world data.'] } },
-      { org: 'Université Félix Houphouët-Boigny — Cocody', date: '2017 — 2020', role: { fr: 'Licence de Physique', en: 'Bachelor’s in Physics' }, bullets: { fr: ['Fondation scientifique et mathématique rigoureuse.', 'Développement d’une forte capacité d’analyse et de résolution de problèmes complexes.'], en: ['Rigorous scientific and mathematical foundation.', 'Developed strong analytical and complex problem-solving skills.'] } },
       { org: 'USAID / PELAII', date: 'Formation', role: { fr: 'Formation Spécialisée MEAL', en: 'Specialized MEAL Training' }, bullets: { fr: ['Conception de cadres logiques et définition de KPIs.', 'Collecte, analyse de données, et création d’outils de reporting et de visualisation.'], en: ['Logical framework design and KPI definition.', 'Data collection, analysis, and creation of reporting/visualization tools.'] } },
     ],
   },
