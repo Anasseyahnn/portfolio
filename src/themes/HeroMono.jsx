@@ -112,14 +112,14 @@ export function HeroMono() {
             </h1>
             <p style={{ marginTop: 28, maxWidth: 480, fontFamily: 'var(--mono)', fontSize: 'clamp(13px,1.3vw,15px)', lineHeight: 1.7, color: 'var(--mut)' }}>{DATA.tagline[lang]}</p>
             <div style={{ marginTop: 32, display: 'flex', gap: 13, flexWrap: 'wrap' }}>
-              <button onClick={() => scrollToId('chat')} data-cursor className="btn-primary" style={{
+              <button onClick={() => scrollToId('contact')} data-cursor className="btn-primary" style={{
                 padding: '13px 24px', borderRadius: 10, border: 'none', cursor: 'pointer',
                 fontFamily: 'var(--mono)', fontSize: 13, fontWeight: 600, color: '#06120d',
                 background: 'var(--em-glow)', display: 'flex', alignItems: 'center', gap: 9, transition: 'transform .2s,box-shadow .25s'
               }}
                 onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 12px 30px -8px var(--em-glow)'; }}
                 onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = 'none'; }}>
-                {tr(lang, 'Discuter avec mon IA', 'Chat with my AI')} {Icon.arrow({ s: 15 })}
+                {tr(lang, 'Me contacter', 'Get in touch')} {Icon.arrow({ s: 15 })}
               </button>
               <button onClick={() => scrollToId('work')} data-cursor style={{
                 padding: '13px 24px', borderRadius: 10, cursor: 'pointer', fontFamily: 'var(--mono)',

@@ -97,14 +97,14 @@ export function HeroDashboard() {
               'Data Scientist & LLM Specialist. I build data products and AI apps that ship to production — from model to dashboard.')}
           </p>
           <div style={{ marginTop: 32, display: 'flex', gap: 13, flexWrap: 'wrap' }}>
-            <button onClick={() => scrollToId('chat')} data-cursor style={{
+            <button onClick={() => scrollToId('contact')} data-cursor style={{
               padding: '13px 24px', borderRadius: 9, border: 'none', cursor: 'pointer',
               fontFamily: 'var(--mono)', fontSize: 13, fontWeight: 600, color: '#06120d',
               background: 'var(--em-glow)', display: 'flex', alignItems: 'center', gap: 9, transition: 'transform .2s,box-shadow .25s'
             }}
               onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 12px 30px -8px var(--em-glow)'; }}
               onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = 'none'; }}>
-              {tr(lang, 'Discuter avec mon IA', 'Chat with my AI')} →
+              {tr(lang, 'Me contacter', 'Get in touch')} →
             </button>
             <button onClick={() => scrollToId('work')} data-cursor style={{
               padding: '13px 24px', borderRadius: 9, cursor: 'pointer', fontFamily: 'var(--mono)',

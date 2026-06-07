@@ -3,18 +3,27 @@ import { useLang, tr, Reveal, Icon } from './PortLib';
 import { SecHead } from './About';
 import { DATA } from '../data';
 
-// Breast Cancer client-side ML predictor
+// Premium Breast Cancer ML Demo
 function BreastCancerDemo({ onClose, lang }) {
   const [radius, setRadius] = useState(14);
   const [texture, setTexture] = useState(19);
   const [area, setArea] = useState(650);
   const [concavity, setConcavity] = useState(0.08);
 
-  // Calibrated logistic regression weights (Wisconsin Breast Cancer dataset approximation)
-  // Higher features increase malignancy probability.
   const score = -12.5 + (0.45 * radius) + (0.08 * texture) + (0.0045 * area) + (12.0 * concavity);
   const probability = 1 / (1 + Math.exp(-score));
   const isMalignant = probability >= 0.5;
+  const accent = isMalignant ? '#f43f5e' : 'var(--em-glow)';
+
+  const Slider = ({ label, value, min, max, step, unit, onChange }) => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 10, background: 'rgba(255,255,255,0.015)', padding: '14px 18px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.04)' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+        <span style={{ fontSize: 11.5, fontFamily: 'var(--mono)', color: 'var(--mut)', textTransform: 'uppercase', letterSpacing: '.05em' }}>{label}</span>
+        <span style={{ fontSize: 16, fontFamily: 'var(--disp)', fontWeight: 600, color: 'var(--ink)' }}>{typeof value === 'number' && value % 1 !== 0 ? value.toFixed(3) : value} <span style={{ fontSize: 11, color: 'var(--faint)' }}>{unit}</span></span>
+      </div>
+      <input type="range" min={min} max={max} step={step} value={value} onChange={onChange} style={{ width: '100%', cursor: 'pointer', accentColor: accent, transition: 'accent-color 0.3s' }} />
+    </div>
+  );
 
   return (
     <div style={{
@@ -22,110 +31,74 @@ function BreastCancerDemo({ onClose, lang }) {
       background: 'rgba(5,6,8,0.85)', backdropFilter: 'blur(16px)', padding: 20
     }}>
       <div style={{
-        width: '100%', maxWidth: 540, background: '#0d0e12', border: '1px solid var(--line)',
-        borderRadius: 20, padding: '26px 28px', color: 'var(--ink)', boxShadow: '0 30px 80px rgba(0,0,0,0.6)',
-        position: 'relative', animation: 'dirRise 0.4s cubic-bezier(0.2,0.8,0.2,1)'
+        width: '100%', maxWidth: 860, background: '#0d0e12', border: '1px solid var(--line)',
+        borderRadius: 24, color: 'var(--ink)', boxShadow: '0 40px 100px rgba(0,0,0,0.8)',
+        position: 'relative', animation: 'dirRise 0.4s cubic-bezier(0.2,0.8,0.2,1)',
+        overflow: 'hidden', display: 'flex', flexDirection: 'column'
       }}>
+        {/* Top Glow */}
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, transparent, ${accent}, transparent)`, transition: 'background 0.5s' }} />
+        
         {/* Close Button */}
         <button onClick={onClose} style={{
           position: 'absolute', top: 20, right: 20, background: 'rgba(255,255,255,0.04)',
-          border: '1px solid var(--line)', color: 'var(--ink)', width: 32, height: 32,
-          borderRadius: 8, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center'
-        }}>✕</button>
+          border: '1px solid var(--line)', color: 'var(--ink)', width: 34, height: 34,
+          borderRadius: 10, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 10, transition: 'background 0.2s'
+        }} onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'} onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.04)'}>✕</button>
 
-        {/* Title */}
-        <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--em-glow)', letterSpacing: '.18em', textTransform: 'uppercase', marginBottom: 6 }}>
-          {tr(lang, 'DÉMO MACHINE LEARNING · LOCAL', 'MACHINE LEARNING DEMO · LOCAL')}
-        </div>
-        <h3 style={{ margin: 0, fontSize: 22, fontWeight: 700, letterSpacing: '-0.02em', marginBottom: 20 }}>
-          {tr(lang, 'Diagnostic du Cancer du Sein', 'Breast Cancer Diagnostic')}
-        </h3>
-
-        {/* Sliders Workspace */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginBottom: 26 }}>
-          {/* Radius */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12.5, fontFamily: 'var(--mono)' }}>
-              <span style={{ color: 'var(--mut)' }}>{tr(lang, 'Rayon Moyen', 'Mean Radius')}</span>
-              <span style={{ color: 'var(--ink)', fontWeight: 600 }}>{radius} mm</span>
-            </div>
-            <input type="range" min="6" max="28" step="0.1" value={radius} onChange={e => setRadius(parseFloat(e.target.value))} style={{ width: '100%', cursor: 'pointer', accentColor: 'var(--em-glow)' }} />
+        <div style={{ padding: '32px 40px', borderBottom: '1px solid var(--line)' }}>
+          <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: accent, letterSpacing: '.18em', textTransform: 'uppercase', marginBottom: 8, transition: 'color 0.3s' }}>
+            {tr(lang, 'Démo Interactive · Inférence Locale', 'Interactive Demo · Local Inference')}
           </div>
-
-          {/* Texture */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12.5, fontFamily: 'var(--mono)' }}>
-              <span style={{ color: 'var(--mut)' }}>{tr(lang, 'Texture Moyenne', 'Mean Texture')}</span>
-              <span style={{ color: 'var(--ink)', fontWeight: 600 }}>{texture}</span>
-            </div>
-            <input type="range" min="9" max="38" step="0.1" value={texture} onChange={e => setTexture(parseFloat(e.target.value))} style={{ width: '100%', cursor: 'pointer', accentColor: 'var(--em-glow)' }} />
-          </div>
-
-          {/* Area */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12.5, fontFamily: 'var(--mono)' }}>
-              <span style={{ color: 'var(--mut)' }}>{tr(lang, 'Aire Moyenne', 'Mean Area')}</span>
-              <span style={{ color: 'var(--ink)', fontWeight: 600 }}>{area} mm²</span>
-            </div>
-            <input type="range" min="140" max="2200" step="10" value={area} onChange={e => setArea(parseInt(e.target.value))} style={{ width: '100%', cursor: 'pointer', accentColor: 'var(--em-glow)' }} />
-          </div>
-
-          {/* Concavity */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12.5, fontFamily: 'var(--mono)' }}>
-              <span style={{ color: 'var(--mut)' }}>{tr(lang, 'Concavité Moyenne', 'Mean Concavity')}</span>
-              <span style={{ color: 'var(--ink)', fontWeight: 600 }}>{concavity.toFixed(3)}</span>
-            </div>
-            <input type="range" min="0" max="0.45" step="0.005" value={concavity} onChange={e => setConcavity(parseFloat(e.target.value))} style={{ width: '100%', cursor: 'pointer', accentColor: 'var(--em-glow)' }} />
-          </div>
+          <h3 style={{ margin: 0, fontSize: 26, fontFamily: 'var(--disp)', fontWeight: 700, letterSpacing: '-.02em' }}>
+            {tr(lang, 'Diagnostic IA du Cancer du Sein', 'AI Breast Cancer Diagnostic')}
+          </h3>
         </div>
 
-        {/* Results Panel */}
-        <div style={{
-          background: 'rgba(255,255,255,0.02)', border: '1px solid var(--line)', borderRadius: 14,
-          padding: '16px 20px', display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 20, alignItems: 'center'
-        }}>
-          <div>
-            <div style={{ fontSize: 11, fontFamily: 'var(--mono)', color: 'var(--faint)', textTransform: 'uppercase', marginBottom: 6 }}>
-              {tr(lang, 'DIAGNOSTIC PRÉDIT', 'PREDICTED DIAGNOSIS')}
-            </div>
-            <div style={{
-              fontSize: 22, fontWeight: 700, 
-              color: isMalignant ? '#f43f5e' : 'var(--em-glow)',
-              transition: 'color 0.2s'
-            }}>
-              {isMalignant 
-                ? tr(lang, 'MALIN (Cancéreux)', 'MALIGNANT (Cancerous)') 
-                : tr(lang, 'BÉNIN (Sain)', 'BENIGN (Healthy)')}
-            </div>
-            <p style={{ margin: '8px 0 0', fontSize: 12, color: 'var(--mut)', lineHeight: 1.4 }}>
-              {isMalignant 
-                ? tr(lang, 'Les mesures indiquent des caractéristiques typiques de tumeurs agressives.', 'Measurements show characteristics typical of aggressive tumors.')
-                : tr(lang, 'Les caractéristiques cellulaires suggèrent une tumeur non-cancéreuse.', 'Cellular features suggest a non-cancerous tumor.')}
-            </p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))' }}>
+          {/* Left: Sliders */}
+          <div style={{ padding: '32px 40px', display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <Slider label={tr(lang, 'Rayon Moyen', 'Mean Radius')} value={radius} min={6} max={28} step={0.1} unit="mm" onChange={e => setRadius(parseFloat(e.target.value))} />
+            <Slider label={tr(lang, 'Texture Moyenne', 'Mean Texture')} value={texture} min={9} max={38} step={0.1} unit="" onChange={e => setTexture(parseFloat(e.target.value))} />
+            <Slider label={tr(lang, 'Aire Moyenne', 'Mean Area')} value={area} min={140} max={2200} step={10} unit="mm²" onChange={e => setArea(parseInt(e.target.value))} />
+            <Slider label={tr(lang, 'Concavité Moyenne', 'Mean Concavity')} value={concavity} min={0} max={0.45} step={0.005} unit="" onChange={e => setConcavity(parseFloat(e.target.value))} />
           </div>
 
-          {/* Probability Indicator */}
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', borderLeft: '1px solid var(--line)', paddingLeft: 10 }}>
-            <div style={{ position: 'relative', width: 90, height: 90, display: 'grid', placeItems: 'center' }}>
-              <svg width="90" height="90" viewBox="0 0 36 36">
-                <circle cx="18" cy="18" r="15.91" fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="2.5" />
-                <circle cx="18" cy="18" r="15.91" fill="none" 
-                  stroke={isMalignant ? '#f43f5e' : 'var(--em-glow)'} 
-                  strokeWidth="2.5" 
-                  strokeDasharray={`${probability * 100} ${100 - probability * 100}`}
-                  strokeDashoffset="25"
-                  strokeLinecap="round"
-                  style={{ transition: 'stroke-dasharray 0.35s ease, stroke 0.2s' }}
-                />
-              </svg>
-              <div style={{ position: 'absolute', fontFamily: 'var(--mono)', fontSize: 18, fontWeight: 700 }}>
-                {Math.round(probability * 100)}%
+          {/* Right: Results Panel */}
+          <div style={{ padding: '32px 40px', background: 'rgba(255,255,255,0.015)', borderLeft: '1px solid var(--line)', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(circle at center, ${accent}15, transparent 70%)`, opacity: 0.6, transition: 'background 0.5s' }} />
+            
+            <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+              <div style={{ position: 'relative', width: 140, height: 140, display: 'grid', placeItems: 'center', marginBottom: 24 }}>
+                <svg width="140" height="140" viewBox="0 0 36 36" style={{ filter: `drop-shadow(0 0 12px ${accent}40)` }}>
+                  <circle cx="18" cy="18" r="15.91" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="1.5" />
+                  <circle cx="18" cy="18" r="15.91" fill="none" 
+                    stroke={accent} 
+                    strokeWidth="2.5" 
+                    strokeDasharray={`${probability * 100} ${100 - probability * 100}`}
+                    strokeDashoffset="25"
+                    strokeLinecap="round"
+                    style={{ transition: 'stroke-dasharray 0.6s cubic-bezier(0.2,0.8,0.2,1), stroke 0.4s' }}
+                  />
+                </svg>
+                <div style={{ position: 'absolute', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  <span style={{ fontFamily: 'var(--disp)', fontSize: 32, fontWeight: 700, color: 'var(--ink)' }}>{Math.round(probability * 100)}<span style={{ fontSize: 18, color: 'var(--mut)' }}>%</span></span>
+                  <span style={{ fontSize: 10, fontFamily: 'var(--mono)', color: 'var(--mut)', textTransform: 'uppercase', letterSpacing: '.1em', marginTop: 2 }}>{tr(lang, 'Probabilité', 'Probability')}</span>
+                </div>
               </div>
+
+              <div style={{ fontSize: 12, fontFamily: 'var(--mono)', color: 'var(--faint)', textTransform: 'uppercase', letterSpacing: '.15em', marginBottom: 8 }}>
+                {tr(lang, 'DIAGNOSTIC PRÉDIT', 'PREDICTED DIAGNOSIS')}
+              </div>
+              <div style={{ fontSize: 32, fontWeight: 800, fontFamily: 'var(--disp)', color: accent, letterSpacing: '-.02em', transition: 'color 0.4s', textShadow: `0 0 20px ${accent}40` }}>
+                {isMalignant ? tr(lang, 'MALIN', 'MALIGNANT') : tr(lang, 'BÉNIN', 'BENIGN')}
+              </div>
+              <p style={{ margin: '16px 0 0', fontSize: 14, fontFamily: 'var(--disp)', color: 'var(--mut)', lineHeight: 1.6, maxWidth: 280 }}>
+                {isMalignant 
+                  ? tr(lang, 'Attention : Les mesures indiquent des caractéristiques typiques de tumeurs agressives.', 'Warning: Measurements show characteristics typical of aggressive tumors.')
+                  : tr(lang, 'Rassurant : Les caractéristiques cellulaires suggèrent une tumeur non-cancéreuse.', 'Reassuring: Cellular features suggest a non-cancerous tumor.')}
+              </p>
             </div>
-            <span style={{ fontSize: 11, fontFamily: 'var(--mono)', color: 'var(--faint)', marginTop: 8, textTransform: 'uppercase' }}>
-              {tr(lang, 'Probabilité', 'Probability')}
-            </span>
           </div>
         </div>
       </div>
